@@ -1,16 +1,13 @@
-FROM node:5.11.0-slim
+FROM node:16-alpine
 
 WORKDIR /app
-
-RUN npm install -g nodemon
-ADD package.json /app/package.json
-RUN npm config set registry http://registry.npmjs.org
-RUN npm install && npm ls
-RUN mv /app/node_modules /node_modules
-
 ADD . /app
+#RUN npm install -g nodemon
+#ADD package.json /app/package.json
+#RUN npm config set registry http://registry.npmjs.org
+RUN npm install
+#RUN mv /app/node_modules /node_modules
 
-EXPOSE 80
-ENV PORT 80
+#ADD . /app
 
 CMD ["node", "server.js"]

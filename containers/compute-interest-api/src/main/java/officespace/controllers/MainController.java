@@ -74,6 +74,7 @@ public class MainController {
       return interestResult;
     }
     catch (Exception ex) {
+      ex.printStackTrace();
       return "Error updating the account: " + ex.toString();
     }
   }

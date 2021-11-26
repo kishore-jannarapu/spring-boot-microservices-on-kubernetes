@@ -14,7 +14,7 @@ spec:
     app: office-space
     tier: database
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: account-database
@@ -23,6 +23,9 @@ metadata:
 spec:
   strategy:
     type: Recreate
+  selector:
+    matchLabels:
+      app: office-space  
   template:
     metadata:
       labels:
@@ -31,6 +34,7 @@ spec:
     spec:
       containers:
         - image: mysql:5.6
+          imagePullPolicy: IfNotPresent
           name: account-database
           env:
             - name: MYSQL_USER

@@ -1,0 +1,53 @@
+version: '3.0'
+services:
+  account-database:
+    image: mysql:5.6
+    container_name: mysql
+    ports:
+      - 3306:3306
+    environment:
+       - MYSQL_USER=michaelbolton
+       - MYSQL_PASSWORD=password
+       - MYSQL_ROOT_PASSWORD=password
+       - MYSQL_DATABASE=dockercon2017
+       - MYSQL_ROOT_HOST=%
+  account-summary:
+    image: as
+    container_name: account-summary
+    build:
+      context: './containers/account-summary'
+    ports:
+      - 8080:80
+    depends_on: 
+      - account-database
+      - compute-interest-api
+    environment:
+      - PORT=80
+      - MYSQL_DB_PORT=3306
+      - MYSQL_DB_USER=michaelbolton
+      - MYSQL_DB_PASSWORD=password
+      - MYSQL_DB_HOST=account-database
+      - MYSQL_DATABASE=dockercon2017
+  compute-interest-api:
+    image: ci
+    container_name: compute-interest
+    build:
+      context: './containers/compute-interest-api'
+    environment:
+      - MYSQL_DB_PORT=3306
+      - MYSQL_DB_USER=michaelbolton
+      - MYSQL_DB_PASSWORD=password
+      - MYSQL_DB_HOST=account-database
+      - MYSQL_DATABASE=dockercon2017
+    depends_on: 
+      - account-database      
+  send-notification:
+    image: sn
+    container_name: send-notification
+    build:
+      context: './containers/send-notification'
+  transaction-generator:
+    image: tg
+    container_name: transaction-generator
+    build:
+      context: './containers/transaction-generator'

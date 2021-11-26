@@ -8,21 +8,24 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: 80
+    - port: 4000
       protocol: TCP
-      targetPort: 80
+      targetPort: 4000
       nodePort: 30080
   selector:
     app: office-space
     tier: summary
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: account-summary
   labels:
     app: office-space
 spec:
+  selector:
+    matchLabels:
+      app: office-space 
   strategy:
     type: Recreate
   template:
@@ -32,9 +35,9 @@ spec:
         tier: summary
     spec:
       containers:
-        - image: anthonyamanse/account-summary:secrets
-          imagePullPolicy: Always
+        - image: as:latest
           name: account-summary
+          imagePullPolicy: Never
           env:
             - name: MYSQL_DB_USER
               valueFrom:
@@ -57,5 +60,5 @@ spec:
                   name: demo-credentials
                   key: port
           ports:
-            - containerPort: 80
+            - containerPort: 4000
               name: web

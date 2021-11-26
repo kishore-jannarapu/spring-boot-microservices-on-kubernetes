@@ -14,13 +14,16 @@ spec:
     app: office-space
     tier: transaction
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: transaction-generator
   labels:
     app: office-space
 spec:
+  selector:
+    matchLabels:
+      app: office-space 
   strategy:
     type: Recreate
   template:
@@ -30,7 +33,8 @@ spec:
         tier: transaction
     spec:
       containers:
-        - image: anthonyamanse/transaction-generator-office-space:1.0
+        - image: tg:latest
+          imagePullPolicy: Never
           name: transaction-generator
           ports:
             - containerPort: 8080

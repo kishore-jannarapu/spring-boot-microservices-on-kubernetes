@@ -8,4 +8,6 @@ CREATE TABLE `account` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=latin1;
 
-INSERT INTO account (id, balance) VALUES(12345, 0);
+INSERT INTO account (id, balance) VALUES(12345, 1);
+
+COMMIT;

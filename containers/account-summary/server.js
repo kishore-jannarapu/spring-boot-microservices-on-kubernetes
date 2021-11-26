@@ -20,9 +20,9 @@ var express = require('express'),
     methodOverride = require('method-override'),
     app = express(),
     server = require('http').Server(app),
-    io = require('socket.io')(server);
+    io = require('socket.io')(server,{'transports':['polling']});
 
-io.set('transports', ['polling']);
+//io.set('transports', ['polling']);
 
 var port = process.env.PORT || 4000;
 

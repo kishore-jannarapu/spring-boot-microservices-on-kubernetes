@@ -14,13 +14,16 @@ spec:
     app: office-space
     tier: compute
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: compute-interest-api
   labels:
     app: office-space
 spec:
+  selector:
+    matchLabels:
+      app: office-space 
   strategy:
     type: Recreate
   template:
@@ -30,9 +33,9 @@ spec:
         tier: compute
     spec:
       containers:
-        - image: anthonyamanse/compute-interest-api:v1
-          imagePullPolicy: Always
+        - image: ci:latest
           name: compute-interest-api
+          imagePullPolicy: Never
           env:
             - name: MYSQL_DB_USER
               valueFrom:
